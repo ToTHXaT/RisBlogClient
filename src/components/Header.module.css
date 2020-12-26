@@ -1,0 +1,23 @@
+.header {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    background-color: #292272;
+    height: 100px;
+    line-height: 100px;
+}
+
+.navbar_item {
+    display: inline-block;
+    color: white;
+    grid-column-start: 1;
+    user-select: none;
+    text-decoration: none;
+    margin-left: 25px;
+}
+
+.user {
+    color: white;
+    grid-column-start: 5;
+    margin-left: auto;
+}

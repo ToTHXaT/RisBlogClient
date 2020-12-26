@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react'
+import {BrowserRouter} from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Header from './components/Header'
+import Body from './components/Body'
+
+import {UserManager} from './managers/userManager'
+import UserContext from './context/userContext'
+
+
+const App = () => {
+    let [user, setUser] = useState({})
+
+    useEffect(() => {
+        (async () => {
+            let usr = await UserManager.getMe()
+
+            if (!usr.err) {
+                setUser(usr.res)
+            } else {
+                setUser(null)
+            }
+        })()
+
+    }, [])
+
+    return (
+        <BrowserRouter>
+            <UserContext.Provider value={[user, setUser]}>
+                <Header/>
+                <Body/>
+            </UserContext.Provider>
+        </BrowserRouter>
+    )
 }
 
 export default App;
