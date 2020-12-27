@@ -3,21 +3,39 @@ import {Redirect} from 'react-router-dom'
 import userContext from "../../context/userContext";
 
 import {ArticleManager} from "../../managers/articleManager";
-import {Alert} from "react-bootstrap";
+import {Alert, Pagination, Col, Row, ListGroup, Container} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 import ArticleList from "./ArticleList";
+import PagesContext from "../../context/pagesContext";
 
-const MyPosts = () => {
+const AllPosts = () => {
     let user = useContext(userContext)[0];
-    let [page, setPage] = useState(1)
+    let [_page, _setPage] = useContext(PagesContext)
+    let page = _page.all
+    let setPage = (__page) => {
+        _setPage({..._page, all: __page})
+    }
+
+    let [maxPage, setMaxPage] = useState(0)
     let [articles, setArticles] = useState([])
     let [err, setErr] = useState(null)
 
 
     useEffect(() => {
-
         (async () => {
+            let asw = await ArticleManager.getMyArticlesLen()
 
+            if (asw.err) {
+                setErr(asw.err)
+            } else {
+                setMaxPage(Math.ceil(asw.res / 10))
+            }
+        })()
+    }, [])
+
+    useEffect(() => {
+        (async () => {
             let asw = await ArticleManager.getMyArticles(10, (page - 1) * 10)
 
             if (asw.err) {
@@ -25,24 +43,41 @@ const MyPosts = () => {
             } else {
                 setArticles(asw.res)
             }
-        })()
-
+        })();
     }, [page])
 
+    if (!user) return <Redirect to='/login'/>
 
-    if (!user)
-        return <Redirect to="/login"/>
-
+    if (articles.length < 1) return <div></div>
 
     return (
-
-        <div className="container mt-5 mb-5">
-            {err ? <Alert>{err}</Alert> : null}
-            <div className="list-group">
+        <Container className="mt-5 mb-5">
+            <Row>
+                {err ? <Alert variant="danger">{err}</Alert> : null}
+            </Row>
+            <ListGroup>
                 <div > {articles.map((a,i) => <ArticleList article={a} key={i}/>)} </div>
-            </div>
-        </div>
+            </ListGroup>
+            {articles ?
+                <Row className="mt-3">
+                    <Col sm={{span: 2, offset: 5}}>
+                        <Pagination>
+                            <Pagination.Prev disabled={page - 1 < 1} onClick={() => setPage(page - 1)}/>
+                            {page - 3 > 0 ? <Pagination.Item onClick={()=>setPage(page-3)}>{page - 3}</Pagination.Item> : null}
+                            {page - 2 > 0 ? <Pagination.Item onClick={()=>setPage(page-2)}>{page - 2}</Pagination.Item> : null}
+                            {page - 1 > 0 ? <Pagination.Item onClick={()=>setPage(page-1)}>{page - 1}</Pagination.Item> : null}
+                            <Pagination.Item active> {page} </Pagination.Item>
+                            {page + 1 <= maxPage ? <Pagination.Item onClick={()=>setPage(page+1)}>{page + 1}</Pagination.Item> : null}
+                            {page + 2 <= maxPage ? <Pagination.Item onClick={()=>setPage(page+2)}>{page + 2}</Pagination.Item> : null}
+                            {page + 3 <= maxPage ? <Pagination.Item onClick={()=>setPage(page+3)}>{page + 3}</Pagination.Item> : null}
+                            <Pagination.Next disabled={page + 1 > maxPage} onClick={()=>setPage(page + 1)}/>
+                        </Pagination>
+                    </Col>
+                </Row>
+
+                : null}
+        </Container>
     )
 }
 
-export default MyPosts
+export default AllPosts

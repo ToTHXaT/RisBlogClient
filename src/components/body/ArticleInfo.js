@@ -6,6 +6,7 @@ import {Link, Redirect} from "react-router-dom";
 
 import UserContext from '../../context/userContext'
 
+import CommentSection from "./CommentSection";
 
 const ArticleInfo = ({match: {params: {articleid}}}) => {
     let [article, setArticle] = useState(null)
@@ -68,7 +69,7 @@ const ArticleInfo = ({match: {params: {articleid}}}) => {
             <Row>
 
                 <Col>
-                    <p className="text-dark">{article.content}</p>
+                    <p className="text-dark" style={{'white-space': 'pre-wrap'}}>{article.content}</p>
                 </Col>
 
             </Row>
@@ -98,6 +99,14 @@ const ArticleInfo = ({match: {params: {articleid}}}) => {
                         </Col>
                     </Row>
                     : null)
+                : null}
+
+            {article ?
+                <Row className="mt-5">
+                    <Col sm={{span: 8, offset: 2}}>
+                        <CommentSection articleId={article.id}/>
+                    </Col>
+                </Row>
                 : null}
 
         </Container>

@@ -18,10 +18,10 @@ const Header = () => {
               <Nav.Link as={Link} to="/createpost"> Create post </Nav.Link>
               <Nav.Link as={Link} to="/allposts"> Posts </Nav.Link>
             </Nav>
-            <Form inline className="ml-auto mr-5">
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              {/*<Button variant="outline-info">Search</Button>*/}
-            </Form>
+            {/*<Form inline className="ml-auto mr-5">*/}
+            {/*  <FormControl type="text" placeholder="Search" className="mr-sm-2" />*/}
+            {/*  /!*<Button variant="outline-info">Search</Button>*!/*/}
+            {/*</Form>*/}
             <Nav className="" style={{'margin-right': '80px'}}>
                 <NavDropdown title={user ? user.username : 'Guest'} id="basic-nav-dropdown">
 

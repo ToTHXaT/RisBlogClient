@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import {Switch, Route} from 'react-router-dom'
 
@@ -10,18 +10,27 @@ import CreatePost from "./body/CreatePost";
 import UpdatePost from "./body/UpdatePost";
 import AllPosts from "./body/AllPosts";
 
-const Body = () =>
-    <Switch>
-        <Route path="/login" component={LoginPage}/>
-        <Route path="/signup" component={SignupPage}/>
-        <Route path="/myposts" component={MyPosts}/>
-        <Route path="/createpost" component={CreatePost}/>
-        {/*<Route path="/posts" component={Posts}/>*/}
+import PagesContext from "../context/pagesContext";
 
-        <Route path="/article/upd/:articleid/" component={UpdatePost}/>
-        <Route path="/article/:articleid/" component={ArticleInfo}/>
-        <Route path="/allposts" component={AllPosts}/>
-    </Switch>
+const Body = () => {
+    let [page, setPage] = useState({my: 1, all: 1})
+
+    return (
+        <PagesContext.Provider value={[page, setPage]}>
+            <Switch>
+                    <Route path="/login" component={LoginPage}/>
+                    <Route path="/signup" component={SignupPage}/>
+                    <Route path="/myposts" component={MyPosts}/>
+                    <Route path="/createpost" component={CreatePost}/>
+                    {/*<Route path="/posts" component={Posts}/>*/}
+
+                    <Route path="/article/upd/:articleid/" component={UpdatePost}/>
+                    <Route path="/article/:articleid/" component={ArticleInfo}/>
+                    <Route path="/allposts" component={AllPosts}/>
+            </Switch>
+        </PagesContext.Provider>
+    )
+}
 
 
 

@@ -11,10 +11,26 @@ export const ArticleManager = {
             let res = await resp.json()
 
             if (!res.detail) {
-                console.log(res)
                 return {res: res}
             } else {
-                console.log(res)
+                return {err: res.detail}
+            }
+        } catch(e) {
+            return {err: e.toString()}
+        }
+    },
+    getMyArticlesLen: async () => {
+        try {
+            let resp = await fetch(new URL('api/articles/len/my', serverURL).toString(), {
+                method: 'GET',
+                credentials: 'include'
+            })
+
+            let res = await resp.json()
+
+            if (!res.detail) {
+                return {res: res}
+            } else {
                 return {err: res.detail}
             }
         } catch(e) {
@@ -31,10 +47,26 @@ export const ArticleManager = {
             let res = await resp.json()
 
             if (!res.detail) {
-                console.log(res)
                 return {res: res}
             } else {
-                console.log(res)
+                return {err: res.detail}
+            }
+        } catch(e) {
+            return {err: e.toString()}
+        }
+    },
+    getAllArticlesLen: async () => {
+        try {
+            let resp = await fetch(new URL(`api/articles/len`, serverURL).toString(), {
+                method: 'GET',
+                credentials: 'include'
+            })
+
+            let res = await resp.json()
+
+            if (!res.detail) {
+                return {res: res}
+            } else {
                 return {err: res.detail}
             }
         } catch(e) {

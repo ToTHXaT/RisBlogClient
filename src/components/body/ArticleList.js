@@ -25,7 +25,7 @@ const ArticleList = ({article}) => {
                 </h3>
 
                 <p className="text-muted">{new Date(article.modified).toLocaleString('ru')}</p>
-                <p>{article.content.length <= 80 ? article.content : article.content.slice(0, 80) + '...'}</p>
+                <p style={{'white-space': 'pre-wrap'}}>{article.content.length <= 50 ? article.content : article.content.slice(0, 80) + '...'}</p>
                 <p className="text-muted">{article.author.username}</p>
             </div>
         </div>
